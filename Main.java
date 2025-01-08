@@ -1,9 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.lang.*;
 public class Main {
     public static void main (String[] args) throws FileNotFoundException{ 
-        Scanner scan = new Scanner(System.in);
+        try {
+            Scanner scan = new Scanner(System.in);
         int players;
         List<String> words;
         String word;
@@ -29,8 +31,10 @@ public class Main {
             scan = new Scanner(System.in);
             System.out.print("welcome! set word/phrase for player 2 (only letters and spaces allowed): ");
             word = scan.nextLine();
+            if (!word.matches("^[a-zA-Z ]*$")) throw new IllegalArgumentException("invalid entry. run program again.");
             System.out.println("fire! word set.");
         }
+
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         System.out.println(hangmen[6] + "\n");
         System.out.println("welcome to hangman! try not to have your victim end up like that...");
@@ -54,6 +58,9 @@ public class Main {
             System.out.println("progress: " + currentWord);
             System.out.print("guess a letter: ");
             currentGuess = scan.next();
+
+            if (!currentGuess.matches("[\\w]")) throw new IllegalArgumentException("invalid entry. run program again.");
+
             guessedLetters += currentGuess;
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
@@ -69,6 +76,12 @@ public class Main {
         }
         if (currentWord.equals(word)) System.out.println("you win!");
         else System.out.println("you lose! the word was " + word);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        catch (InputMismatchException e) {
+            System.out.println("someone did not enter the right character... run program again");
+        }
     }
 
     static String addLetters(String letter, String word, String progress) {
